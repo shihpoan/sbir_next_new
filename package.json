@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "pm2start": "next build && pm2 start npm --name \"SBIRNEXTNEW\" -- start",
+    "pm2restart": "next build && pm2 restart SBIRNEXTNEW"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
