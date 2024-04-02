@@ -40,7 +40,7 @@ export default function DashboardLayout({ children }) {
   return (
     <>
       <section className="flex w-full h-full">
-        <Sidebar titles={sidebarTitles ? [...sidebarTitles] : []} />
+        {/* <Sidebar titles={sidebarTitles ? [...sidebarTitles] : []} /> */}
         {children}
       </section>
     </>
