@@ -124,9 +124,9 @@ function page() {
                     <span className="text-2xl font-bold text-primary_900">
                       {userData ? userData.companyName : "公司名稱"}
                     </span>
-                    <span className="text-lg font-bold text-primary_900 opacity-75">
+                    {/* <span className="text-lg font-bold text-primary_900 opacity-75">
                       {userData && userData.tax}
-                    </span>
+                    </span> */}
                     <div className="flex w-full text-2xl text-primary_900">
                       <span className="w-1/3 font-bold">計畫名稱</span>
                       <div className="w-2/3 font-normal truncate">
