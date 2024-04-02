@@ -2,9 +2,7 @@
 import React from "react";
 import Image from "next/image.js";
 
-import Menu from "@/components/muis/Menu.jsx";
-
-import { Bars4Icon } from "@heroicons/react/24/solid";
+import Menu from "@/components/muis/menus/Menu.jsx";
 
 function page() {
   return (

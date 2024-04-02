@@ -1,5 +1,5 @@
 "use client";
-import "../globals.css";
+import "./globals.css";
 import Head from "next/head.js";
 
 // export const metadata = {
