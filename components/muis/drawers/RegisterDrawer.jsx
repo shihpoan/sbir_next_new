@@ -1,5 +1,5 @@
 "use client";
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image.js";
 import { useRouter } from "next/navigation.js";
 
@@ -21,23 +21,37 @@ export default function RegisterDrawer({
   // 可以簡單填寫之資料
   const labelsForEasyDatas = ["電子郵件", "密碼", "公司名稱", "通訊地址"];
 
-  const [open, setOpen] = React.useState(false);
-  const [registerDatas, setRegisterDatas] = React.useState({
+  const [open, setOpen] = useState(false);
+  const [registerDatas, setRegisterDatas] = useState({
     email: "",
     password: "",
     companyName: "",
     companyAddress: "",
   });
 
-  const [isRegisterError, setIsRegisterError] = React.useState(false);
-  const [isRegisterSuccess, setIsRegisterSuccess] = React.useState(false);
+  const [isRegisterError, setIsRegisterError] = useState(false);
+  const [isRegisterSuccess, setIsRegisterSuccess] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
+    const handleGlobalKeyDown = (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault(); // 阻止默認行為
+      }
+    };
+
+    window.addEventListener("keydown", handleGlobalKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleGlobalKeyDown);
+    };
+  }, []);
+
+  useEffect(() => {
     // console.log("isOpen", isOpen);
     _toggleDrawer(isOpen)();
   }, [isOpen]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     // console.log("open", open);
     // 外部展開 Func
     toggleDrawer(open);
@@ -66,6 +80,7 @@ export default function RegisterDrawer({
         break;
       case "companyName":
         _registerDatas.companyName = data;
+        _registerDatas.s3FolderName = data;
         break;
       case "companyAddress":
         _registerDatas.companyAddress = data;
@@ -79,7 +94,18 @@ export default function RegisterDrawer({
   const onSubmit = async () => {
     console.log("onSubmit", registerDatas);
     try {
+      if (
+        !registerDatas.email ||
+        !registerDatas.password ||
+        !registerDatas.companyName ||
+        !registerDatas.companyAddress
+      ) {
+        throw new Error("缺少必填項目");
+      }
       const signup = await useNodePostApi("/auth/signup", registerDatas);
+      const newS3Folder = await useNodePostApi("/api/aws/createFolder", {
+        folderName: registerDatas.companyName,
+      });
       console.log("signup", signup.data);
       // setCookie("accessToken", a.data.data.acc, {
       //   domain: ".zhshihpoan.com",

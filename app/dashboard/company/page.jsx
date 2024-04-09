@@ -1,7 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation.js";
-import { useNodeGetApi, useNodePostApi } from "@/hooks/useNode.js";
+import {
+  useNodeGetApi,
+  useNodePostApi,
+  useNodePatchApi,
+} from "@/hooks/useNode.js";
 
 import { setCookie, deleteCookie, getCookies, getCookie } from "cookies-next";
 import jwt from "jsonwebtoken";
@@ -9,6 +13,7 @@ import jwt from "jsonwebtoken";
 import Divider from "@mui/material/Divider";
 import CloudDownloadOutlinedIcon from "@mui/icons-material/CloudDownloadOutlined";
 import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
+import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
 
 import EditDrawer from "@/components/muis/drawers/EditDrawer.jsx";
 
@@ -22,7 +27,72 @@ function page() {
   const [userId, setUserId] = useState(null);
   const [userData, setUserData] = useState(null);
 
+  // 判斷是否有 aws folder
+  const [dbS3FolderName, setDbS3FolderName] = useState(null);
+
+  // aws 上傳
+  const [file, setFile] = useState(null);
+  const [isFilesExist, setIsFilesExist] = useState([
+    {
+      isFirstEdit: true,
+    },
+    {
+      isFirstEdit: true,
+    },
+    {
+      isFirstEdit: true,
+    },
+    {
+      isFirstEdit: true,
+    },
+    {
+      isFirstEdit: true,
+    },
+    {
+      isFirstEdit: true,
+    },
+    {
+      isFirstEdit: true,
+    },
+    {
+      isFirstEdit: true,
+    },
+    {
+      isFirstEdit: true,
+    },
+    {
+      isFirstEdit: true,
+    },
+    {
+      isFirstEdit: true,
+    },
+    {
+      isFirstEdit: true,
+    },
+    {
+      isFirstEdit: true,
+    },
+  ]);
+  const [nowUpdateIndex, setNowUpdateIndex] = useState(0);
+
   const accessToken = getCookie("sbirAccessToken");
+
+  // 上傳文件Titles
+  const uploadDatasTitle = [
+    "計畫申請表",
+    "計畫書(PDF)",
+    "公司/商業登記證明文件",
+    "營利事業所得稅結算申報書",
+    "營業稅申報書",
+    "僱用勞保員工人數證明文件",
+    "公司無欠稅之證明文件",
+    "技轉契約、合作意願書（備忘錄）",
+    "顧問及國內外專家願任同意書/任職單位同意書",
+    "育成中心或開放實驗室和可進駐影本及其他",
+    "員工人數未滿五人切結書",
+    "建議迴避之人員清單",
+    "蒐集個人資料告知事項暨個人資料提供同意書",
+  ];
 
   // 解碼
   useEffect(() => {
@@ -46,6 +116,21 @@ function page() {
         setUserData({
           ...userDatas,
         });
+        const _s3FolderName = userDatas.s3FolderName;
+        if (_s3FolderName !== "NoFolder") setDbS3FolderName(_s3FolderName);
+
+        // 查詢資料
+        const dbDatas = await useNodeGetApi(
+          `/api/document/findByCompanyId/${userId}`
+        );
+        const datas = [...dbDatas.data.data];
+        console.log("dbDatas", datas);
+        datas.forEach((data) => {
+          const index = data.index;
+          isFilesExist[index] = data;
+        });
+        console.log("isFilesExist", isFilesExist);
+        setIsFilesExist([...isFilesExist]);
       } catch (err) {
         console.log(err);
       }
@@ -53,6 +138,11 @@ function page() {
 
     if (userId) findUser();
   }, [userId, isNeedUpdate]);
+
+  // 選擇檔案後直接上傳
+  useEffect(() => {
+    if (file) handleUpload();
+  }, [file]);
 
   // 打開Drawer
   const toggleDrawer = (newOpen) => {
@@ -65,6 +155,53 @@ function page() {
     // console.log("out new", newOpen);
     setIsNeedUpdate(!isNeedUpdate);
   };
+
+  // 上傳文件
+  const handleUpload = async () => {
+    try {
+      if (!file) throw new Error();
+
+      const formData = new FormData();
+      // file.name = encodeURIComponent(file.name);
+      formData.append("fileContent", file, encodeURIComponent(file.name));
+
+      const _uploadDatas = await useNodePostApi(
+        `/api/aws/upload/${dbS3FolderName}`,
+        formData
+      );
+
+      console.log("_uploadDatas", _uploadDatas);
+
+      // 上傳後更新db Document
+      if (_uploadDatas) {
+        if (isFilesExist[nowUpdateIndex].isFirstEdit) {
+          const _dbDocument = await useNodePostApi(`/api/document/new`, {
+            companyId: userId,
+            index: nowUpdateIndex,
+            isFirstEdit: false,
+            s3Url: _uploadDatas.data,
+          });
+          console.log("_dbDocument", _dbDocument);
+        } else {
+          const _dbDocument = await useNodePatchApi(`/api/document/update`, {
+            companyId: userId,
+            index: nowUpdateIndex,
+            isFirstEdit: false,
+            s3Url: _uploadDatas.data,
+          });
+          console.log("_dbDocument", _dbDocument);
+        }
+        setIsNeedUpdate(!isNeedUpdate);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleFileChange = (event) => {
+    setFile(event.target.files[0]);
+  };
+
   return (
     <div className="flex w-full h-full max-h-full bg-primary_content_bg_100 overflow-auto">
       <div className="flex flex-col w-full h-max items-center">
@@ -256,32 +393,51 @@ function page() {
                       <div className="flex flex-col w-full h-full px-4 gap-2 justify-center">
                         <span className="font-bold">附件內容</span>
                         <span className="text-primary_900">
-                          開放上傳時間：2024.04.10 ~ 2024.05.31
+                          開放上傳時間：2024.04.11 ~ 2024.05.31
                         </span>
                       </div>
                     </div>
-                    {/* datas */}
+                    {/* 上傳資料 */}
                     <div className="flex flex-col">
-                      {[1, 2, 3, 4].map((i, idx) => (
+                      {[...Array(13).keys()].map((i, idx) => (
                         <div
                           key={idx}
                           className={`flex w-full h-max min-h-[3rem] border-l-[1px] border-r-[1px] ${
                             !idx && "border-t-[1px]"
                           } ${
-                            idx == 3 && "border-b-[1px]"
+                            idx == 12 && "border-b-[1px]"
                           } border-text_color_100`}
                           style={{
                             backgroundColor: idx % 2 == 0 ? "white" : "#DBDBDB",
                           }}
                         >
-                          <div className="flex w-[30%] justify-center items-center">
-                            上傳附件名稱
+                          <div className="flex w-[60%] justify-start items-center px-2">
+                            {uploadDatasTitle[idx]}
                           </div>
-                          <div className="flex w-[70%] border-l-[1px] items-center px-1">
-                            <span>檔案名稱</span>
+                          <div className="flex w-[30%] border-l-[1px] justify-center items-center px-1">
+                            <span>
+                              {!isFilesExist[idx].isFirstEdit
+                                ? isFilesExist[idx].updatedAt
+                                : "尚未上傳"}
+                            </span>
                           </div>
-                          <div className="flex w-[10%] text-gray-400 border-l-[1px] justify-center items-center cursor-not-allowed">
-                            <CloudUploadOutlinedIcon />
+                          <div className="flex w-[10%] text-gray-400 border-l-[1px] justify-center items-center">
+                            <div>
+                              {/* 隱藏的 input 元素 */}
+                              <input
+                                type="file"
+                                id="file-input"
+                                style={{ display: "none" }}
+                                onChange={handleFileChange}
+                              />
+                              {/* ICON 元素，單擊時觸發 input 元素的點擊事件 */}
+                              <label htmlFor="file-input">
+                                <CloudUploadOutlinedIcon
+                                  className="cursor-pointer hover:text-primary_500"
+                                  onClick={() => setNowUpdateIndex(idx)}
+                                />
+                              </label>
+                            </div>
                           </div>
                         </div>
                       ))}
