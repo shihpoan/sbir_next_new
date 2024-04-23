@@ -8,6 +8,7 @@ import MenuItem from "@mui/material/MenuItem";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
 
 import RegisterDrawer from "../drawers/RegisterDrawer.jsx";
 import LoginDrawer from "../drawers/LoginDrawer.jsx";
@@ -16,7 +17,7 @@ import LoginDrawer from "../drawers/LoginDrawer.jsx";
 const googleDriveUrl =
   "https://drive.google.com/drive/folders/14TciBSbioYU-PBDUX6gcoFavqDUzlnar";
 
-const options = [{ name: "免費下載", url: googleDriveUrl }];
+const options = [{ name: "資料下載", url: googleDriveUrl }];
 
 const ITEM_HEIGHT = 48;
 
@@ -104,7 +105,7 @@ export default function LongMenu() {
               toggleRegisterDrawer(true);
             }}
           >
-            <AccountCircleIcon />
+            <ContactsOutlinedIcon />
             廠商註冊
           </div>
         </MenuItem>

@@ -43,7 +43,7 @@ function page() {
               alt="LOGO"
               width={800}
               height={106}
-              src="/主辦方banner.svg"
+              src="/主辦方.png"
               className="w-full h-full"
             />
           </div>
@@ -53,7 +53,7 @@ function page() {
               alt="LOGO"
               width={800}
               height={106}
-              src="/首頁封面.png"
+              src="/首頁封面113.png"
               className="w-full h-full"
             />
           </div>
@@ -61,7 +61,7 @@ function page() {
         {/* 精選廠商 */}
         <div className="relative flex flex-col w-full h-max z-10 gap-2">
           <div className="flex w-full text-3xl font-bold justify-center">
-            <span>111 年度獲選廠商</span>
+            <span>歷年獲選廠商</span>
           </div>
           <div className="flex flex-wrap justify-center">
             {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map(

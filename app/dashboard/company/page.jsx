@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation.js";
+import Link from "next/link.js";
 import {
   useNodeGetApi,
   useNodePostApi,
@@ -205,6 +206,7 @@ function page() {
   return (
     <div className="flex w-full h-full max-h-full bg-primary_content_bg_100 overflow-auto">
       <div className="flex flex-col w-full h-max items-center">
+        {/* 第一條Bar 登出 */}
         <div className="flex w-full h-[3rem] bg-primary_content_bg_100 text-primary_900 font-semibold justify-end items-center px-4 py-2">
           <span
             className="rounded hover:text-white hover:bg-primary_900 p-1 cursor-pointer"
@@ -217,8 +219,19 @@ function page() {
           </span>
         </div>
         <div className="w-full h-[1px] bg-primary_content_bg_400" />
-        <div className="flex w-full h-[3rem] bg-white text-primary_900 font-semibold justify-start items-center px-4 py-2">
+        {/* 第二條Bar 公司名稱 ＋ 資料下載 */}
+        <div className="flex w-full h-[3rem] bg-white text-primary_900 font-semibold justify-between items-center px-4 py-2">
           <span>{userData && userData.companyName}</span>
+          <Link
+            href={
+              "https://drive.google.com/drive/folders/14TciBSbioYU-PBDUX6gcoFavqDUzlnar"
+            }
+            target="_blank"
+          >
+            <div className="flex gap-4">
+              <span>資料下載</span>
+            </div>
+          </Link>
         </div>
         <div className="w-full h-[1px] bg-primary_content_bg_400" />
         {/* 廠商資料 */}
@@ -241,8 +254,17 @@ function page() {
                     編輯基本資料
                   </button>
                   {/* 暫時隱藏 */}
-                  <button className="hidden bg-primary_500 text-white rounded-[33px] px-4 py-2">
-                    上傳附件
+                  <button
+                    className="bg-primary_500 text-white rounded-[33px] px-4 py-2"
+                    style={{
+                      display:
+                        userData && userData.accountTier == "admin"
+                          ? "flex"
+                          : "none",
+                    }}
+                    onClick={() => router.push("/dashboard/admin")}
+                  >
+                    管理者介面
                   </button>
                 </div>
                 {/* <div className="flex w-1/2 justify-end">
@@ -393,7 +415,7 @@ function page() {
                       <div className="flex flex-col w-full h-full px-4 gap-2 justify-center">
                         <span className="font-bold">附件內容</span>
                         <span className="text-primary_900">
-                          開放上傳時間：2024.04.11 ~ 2024.05.31
+                          開放上傳時間：自公告起 ~ 2024.05.31
                         </span>
                       </div>
                     </div>

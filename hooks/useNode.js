@@ -1,6 +1,6 @@
 import axios from "axios";
-// const nodeServerPath = "http://localhost:8000";
-const nodeServerPath = "https://node.keelung-sbir.com.tw";
+const nodeServerPath = "http://localhost:8000";
+// const nodeServerPath = "https://node.keelung-sbir.com.tw";
 
 // apis
 async function useNodeGetApi(apiPath, apiObj) {
