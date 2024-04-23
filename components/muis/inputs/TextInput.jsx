@@ -26,6 +26,7 @@ export default function FormPropsTextFields({
       <div>
         <TextField
           required
+          type={labelKey == "password" ? "password" : "text"}
           id="outlined-required"
           label={label}
           defaultValue={defaultValue}
