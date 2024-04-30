@@ -23,16 +23,16 @@ export default function RootLayout({ children }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta
           name="og:title"
-          content="112年度基隆市政府地方產業創新研發推動計畫（地方型SBIR）"
+          content="113年度基隆市政府地方產業創新研發推動計畫（地方型SBIR）"
         />
         <meta name="og:description" content="最高補助200萬元" />
         <meta
           name="og:image"
-          content="https://sbir2023.s3.ap-southeast-2.amazonaws.com/sbir%E5%BE%B5%E4%BB%B6%E8%AA%AA%E6%98%8E%E6%9C%83.png"
+          content="https://sbirdatas.s3.ap-northeast-1.amazonaws.com/%E9%85%87%E4%BE%AF%E8%B3%87%E8%A8%8A/sbir-seo-%E7%B8%AE%E5%9C%96.png"
         />
         <meta
           property="og:image"
-          content="https://sbir2023.s3.ap-southeast-2.amazonaws.com/sbir%E5%BE%B5%E4%BB%B6%E8%AA%AA%E6%98%8E%E6%9C%83.png"
+          content="https://sbirdatas.s3.ap-northeast-1.amazonaws.com/%E9%85%87%E4%BE%AF%E8%B3%87%E8%A8%8A/sbir-seo-%E7%B8%AE%E5%9C%96.png"
         />
         <meta
           property="og:title"

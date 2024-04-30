@@ -64,14 +64,17 @@ function page() {
             <span>歷年獲選廠商</span>
           </div>
           <div className="flex flex-wrap justify-center">
-            {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map(
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16].map(
               (i, idx) => (
                 <Image
                   key={idx}
                   alt="logo"
-                  src={`/廠商/廠商${idx}.png`}
-                  width={604}
-                  height={260}
+                  // src={`/廠商/廠商${idx}.png`}
+                  src={`https://sbirdatas.s3.ap-northeast-1.amazonaws.com/%E9%85%87%E4%BE%AF%E8%B3%87%E8%A8%8A/${
+                    idx + 1
+                  }.png`}
+                  width={400}
+                  height={172}
                 />
               )
             )}
