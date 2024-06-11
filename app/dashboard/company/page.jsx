@@ -73,6 +73,12 @@ function page() {
     {
       isFirstEdit: true,
     },
+    {
+      isFirstEdit: true,
+    },
+    {
+      isFirstEdit: true,
+    },
   ]);
   const [nowUpdateIndex, setNowUpdateIndex] = useState(0);
 
@@ -93,6 +99,8 @@ function page() {
     "員工人數未滿五人切結書",
     "建議迴避之人員清單",
     "蒐集個人資料告知事項暨個人資料提供同意書",
+    "聯合合作協議書",
+    "初審簡報檔",
   ];
 
   // 解碼
@@ -421,13 +429,13 @@ function page() {
                     </div>
                     {/* 上傳資料 */}
                     <div className="flex flex-col">
-                      {[...Array(13).keys()].map((i, idx) => (
+                      {[...Array(15).keys()].map((i, idx) => (
                         <div
                           key={idx}
                           className={`flex w-full h-max min-h-[3rem] border-l-[1px] border-r-[1px] ${
                             !idx && "border-t-[1px]"
                           } ${
-                            idx == 12 && "border-b-[1px]"
+                            idx == 14 && "border-b-[1px]"
                           } border-text_color_100`}
                           style={{
                             backgroundColor: idx % 2 == 0 ? "white" : "#DBDBDB",
