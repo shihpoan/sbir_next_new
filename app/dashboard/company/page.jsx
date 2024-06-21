@@ -455,6 +455,7 @@ function page() {
                             <div>
                               {/* 隱藏的 input 元素 */}
                               <input
+                                disabled
                                 type="file"
                                 id="file-input"
                                 style={{ display: "none" }}
