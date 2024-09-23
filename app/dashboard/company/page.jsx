@@ -261,6 +261,14 @@ function page() {
                   >
                     編輯基本資料
                   </button>
+                  {userData && userData.googleFormUrl !== "NoForm" && (
+                    <button
+                      className="bg-primary_500 text-white rounded-[33px] px-4 py-2"
+                      onClick={() => router.push(userData.googleFormUrl)}
+                    >
+                      月報表填寫
+                    </button>
+                  )}
                   {/* 暫時隱藏 */}
                   <button
                     className="bg-primary_500 text-white rounded-[33px] px-4 py-2"
