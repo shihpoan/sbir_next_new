@@ -463,7 +463,8 @@ function page() {
                             <div>
                               {/* 隱藏的 input 元素 */}
                               <input
-                                disabled
+                                // 停用下載功能時取消註記
+                                // disabled
                                 type="file"
                                 id="file-input"
                                 style={{ display: "none" }}
